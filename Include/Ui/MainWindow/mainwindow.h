@@ -4,17 +4,27 @@
 #include <QMainWindow>
 #include <memory>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+namespace Ui {
+    class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    void constructConnecters();
+    void constructWindow();
+
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+public slots:
+    void onPlainTextSet(const QStringList &list);
+
+signals:
+    void command(const QString &command);
 
 private:
     std::unique_ptr<Ui::MainWindow> m_ui;

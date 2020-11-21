@@ -1,22 +1,19 @@
 #ifndef ARGUMENTS_H
 #define ARGUMENTS_H
 
-#include <QObject>
 #include <QThread>
-#include <memory>
 
 #include "commands.h"
-#include "argworker.h"
 
-class Arguments : public QObject
+class Commander : public QObject
 {
     Q_OBJECT
 
     std::unique_ptr<QThread> m_thread;
-    std::unique_ptr<ArgWorker> m_worker;
+    std::vector<QObject> m_objects;
 
 public:
-    Arguments();
+    Commander(QObject *parent);
 
     void parseAndShine(const QString &command);
 
@@ -24,11 +21,12 @@ public:
     void move(const QStringList &cmdList);
     void exit(const QStringList &cmdList);
     void close(const QStringList &cmdList);
+    void widgets();
 
 signals:
     void infoWindowSig(const QStringList &info);
-    void setEcho(const bool set);
-
+    void setEchoSig(const bool set);
+    void widgetsSig();
 };
 
 #endif // ARGUMENTS_H

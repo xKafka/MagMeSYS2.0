@@ -1,4 +1,4 @@
-#include "Include/Ui/MainWindow/mainwindow.h"
+#include "Include/Ui/Moduls/MainWindow/mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -10,11 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
     constructWindow();
     constructConnecters();
 }
-
 MainWindow::~MainWindow()
 {
 }
-
 void MainWindow::constructConnecters()
 {
     connect(m_ui->lineEdit_console, &QLineEdit::returnPressed, this, [this]()
@@ -33,5 +31,9 @@ void MainWindow::onPlainTextSet(const QStringList &list)
 {
     for(const auto &text : list)
         m_ui->plainTextEdit_console->appendPlainText(text);
+
+}
+void MainWindow::parseCmd(const QStringList &cmdList)
+{
 
 }

@@ -1,12 +1,11 @@
-#include "Include/Api/arguments.h"
+#include "Include/Api/Moduls/commander.h"
 #include <QDebug>
 
-Arguments::Arguments()
-{
+Commander::Commander(QObject *parent)
+    : QObject(parent)
+{ }
 
-}
-
-void Arguments::parseAndShine(const QString &command)
+void Commander::parseAndShine(const QString &command)
 {
     auto commandList = command.split(QRegExp("[\r\n\t ]"), QString::SkipEmptyParts);
     const auto cmd = CMD::str2int(commandList.first().toLocal8Bit().data());
@@ -25,7 +24,7 @@ void Arguments::parseAndShine(const QString &command)
     }
 }
 
-void Arguments::echo(const QStringList &cmdList)
+void Commander::echo(const QStringList &cmdList)
 {
     for(const auto &cmd : cmdList)
     {
@@ -40,24 +39,31 @@ void Arguments::echo(const QStringList &cmdList)
                                     });
         if(cmd.contains("set"))
         {
-            const auto expre = [&cmdList]() -> const bool { for(const auto &cmd : cmdList) { if(cmd.contains("true")) return true; } return false; };
+            const auto setUp = [&cmdList]() -> const bool { for(const auto &cmd : cmdList) { if(cmd.contains("true")) return true; } return false; };
+            const auto setDown = [&cmdList]() -> const bool { for(const auto &cmd : cmdList) { if(cmd.contains("false")) return true; } return false; };
 
-            emit setEcho(expre());
+            if(setUp()) emit setEchoSig(true);
+            if(setDown()) emit setEchoSig(false);
         }
     }
 }
 
-void Arguments::move(const QStringList &cmdList)
+void Commander::widgets()
+{
+    emit widgetsSig();
+}
+
+void Commander::move(const QStringList &cmdList)
 {
 
 }
 
-void Arguments::exit(const QStringList &cmdList)
+void Commander::exit(const QStringList &cmdList)
 {
 
 }
 
-void Arguments::close(const QStringList &cmdList)
+void Commander::close(const QStringList &cmdList)
 {
 
 }

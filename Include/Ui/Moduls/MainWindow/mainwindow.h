@@ -4,29 +4,32 @@
 #include <QMainWindow>
 #include <memory>
 
+#include "Include/Api/Modul.h"
+
 namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public Modul
 {
     Q_OBJECT
 
     void constructConnecters();
     void constructWindow();
 
+    std::unique_ptr<Ui::MainWindow> m_ui;
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void parseCmd(const QStringList &cmdList) override final;
 
 public slots:
     void onPlainTextSet(const QStringList &list);
 
 signals:
     void command(const QString &command);
-
-private:
-    std::unique_ptr<Ui::MainWindow> m_ui;
 };
+
 #endif // MAINWINDOW_H

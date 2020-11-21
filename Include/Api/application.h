@@ -1,21 +1,30 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QObject>
-#include <memory>
+#include <QMap>
 
-#include "Include/Ui/widgetcreator.h"
-#include "arguments.h"
+#include "Include/Ui/Moduls/MainWindow/mainwindow.h"
+#include "Moduls/commander.h"
 
 class Application : public QObject
 {
     Q_OBJECT
+//Api moduls
+    std::unique_ptr<Commander> m_commander;
+    std::unique_ptr<MainWindow> m_mainWindow;
 
-    std::unique_ptr<WidgetCreator> m_widgets;
-    std::unique_ptr<Arguments> m_commander;
+    QMap<QString, QObject *> m_moduls;
 
 public:
     explicit Application(QObject *parent = nullptr);
+
+//    void multiplexCommand(const QString &command);
+
+private slots:
+    void multiplexCommand(const QString &command);
+
+private:
+    void sendCmdSetAsyn(const QStringList &cmdList);
 
 signals:
 

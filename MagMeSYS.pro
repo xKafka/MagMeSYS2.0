@@ -17,8 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += $$files(*.cpp, true)
 
-HEADERS += $$files(*.h, true)
-
+HEADERS += $$files(*.h, true) \
+    Include/Api/Modul.h
 
 FORMS += $$files(*.ui, true)
 

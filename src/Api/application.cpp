@@ -8,10 +8,9 @@ Application::Application(QObject *parent) :
     m_commander(std::make_unique<Commander>(this)),
     m_mainWindow(std::make_unique<MainWindow>()),
     //moduls summary
-
     m_moduls({
-                { "MainWindow", &*m_mainWindow },
-                { "Commander", &*m_commander}
+                { "MainWindow", m_mainWindow.get() },
+                { "Commander", m_commander.get() }
              })
 {
 
@@ -25,30 +24,18 @@ void Application::multiplexCommand(const QString &command)
     auto commandList = command.split(QRegExp("[\r\n\t ]"), QString::SkipEmptyParts);
 
     sendCmdSetAsyn(commandList);
-
 }
 
-void Application::sendCmdSetAsyn(const QStringList &cmdList)
+void Application::sendCmdSetAsyn(QStringList &cmdList)
 {
-    QString retVal;
+    //command multiplexer -> sends command to proper QObject via autoconnection
+
+    QStringList retVal;
 
     const auto toObjectSend = m_moduls[cmdList.first()];
+    cmdList.removeFirst();
 
-    /*
-     *
-     *
-     * every modul should be inherited by Modul class insted of QObject
-     *
-     *
-     *
-     *
-     *
-    */
-  /*  QMetaObject::invokeMethod(obj, "compute", Qt::DirectConnection,Q_RETURN_ARG(QString, retVal),
-                              Q_ARG(QString, "sqrt"),
-                              Q_ARG(int, 42),
-                              Q_ARG(double, 9.7));
-*/
+    QMetaObject::invokeMethod(dynamic_cast<QObject*>(toObjectSend), "parseCmd", Qt::AutoConnection, Q_RETURN_ARG(QStringList, retVal), Q_ARG(const QStringList&, cmdList));
 }
 
 

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui 3dcore
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += $$files(*.cpp, true)
 
 HEADERS += $$files(*.h, true) \
-    Include/Api/Modul.h
+    Include/Ui/Moduls/MainWindow/circularbuffer.h
 
 FORMS += $$files(*.ui, true)
 

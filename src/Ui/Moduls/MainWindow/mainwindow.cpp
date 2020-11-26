@@ -11,29 +11,24 @@ MainWindow::MainWindow(QWidget *parent)
     constructConnecters();
 }
 MainWindow::~MainWindow()
-{
-}
+{}
 void MainWindow::constructConnecters()
 {
-    connect(m_ui->lineEdit_console, &QLineEdit::returnPressed, this, [this]()
-    {
-        emit command(m_ui->lineEdit_console->text());
-        m_ui->lineEdit_console->clear();
-    });
+    connect(m_ui->textEdit_console, &TextEdit::commandSig, this, [this](const QString &cmd) { emit command(cmd);});
 }
 void MainWindow::constructWindow()
 {
     m_ui->setupUi(this);
-    m_ui->plainTextEdit_console->viewport()->setAutoFillBackground(false);
-    m_ui->plainTextEdit_console->setFrameStyle(QFrame::NoFrame);
 }
 void MainWindow::onPlainTextSet(const QStringList &list)
 {
-    for(const auto &text : list)
-        m_ui->plainTextEdit_console->appendPlainText(text);
 
 }
-void MainWindow::parseCmd(const QStringList &cmdList)
+QStringList MainWindow::parseCmd(const QStringList &cmdList)
 {
+    qDebug() << "mainWindow";
 
+    qDebug() << cmdList;
+
+    return QStringList{"MainWindow ", "command ", "success"};
 }

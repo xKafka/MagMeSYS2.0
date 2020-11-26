@@ -67,3 +67,13 @@ void Commander::close(const QStringList &cmdList)
 {
 
 }
+QStringList Commander::parseCmd(const QStringList &cmdList)
+{
+
+    qDebug() << "commander";
+
+    qDebug() << cmdList;
+
+    return QStringList{"Commander ", "command ", "success"};
+}
+

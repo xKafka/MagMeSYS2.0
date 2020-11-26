@@ -5,6 +5,7 @@
 
 #include "Include/Ui/Moduls/MainWindow/mainwindow.h"
 #include "Moduls/commander.h"
+#include "Include/Api/Modul.h"
 
 class Application : public QObject
 {
@@ -13,18 +14,17 @@ class Application : public QObject
     std::unique_ptr<Commander> m_commander;
     std::unique_ptr<MainWindow> m_mainWindow;
 
-    QMap<QString, QObject *> m_moduls;
+    QMap<QString, Modul *> m_moduls;
 
 public:
     explicit Application(QObject *parent = nullptr);
 
-//    void multiplexCommand(const QString &command);
 
 private slots:
     void multiplexCommand(const QString &command);
 
 private:
-    void sendCmdSetAsyn(const QStringList &cmdList);
+    void sendCmdSetAsyn(QStringList &cmdList);
 
 signals:
 

@@ -17,19 +17,24 @@ class MainWindow : public QMainWindow, public Modul
     void constructConnecters();
     void constructWindow();
 
+    //std::unique_ptr<Ui::MainWindow> m_ui;
+
     std::unique_ptr<Ui::MainWindow> m_ui;
+
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void parseCmd(const QStringList &cmdList) override final;
+    Q_INVOKABLE QStringList parseCmd(const QStringList &cmdList) override final;
 
 public slots:
     void onPlainTextSet(const QStringList &list);
 
+
 signals:
     void command(const QString &command);
+
 };
 
 #endif // MAINWINDOW_H

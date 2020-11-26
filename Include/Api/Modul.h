@@ -2,11 +2,13 @@
 #define MODUL_H
 
 #include <QStringList>
+#include <QObject>
 
 class Modul
 {
-    virtual void parseCmd(const QStringList &cmdList) = 0;
 
+public:
+    virtual QStringList parseCmd(const QStringList &cmdList) = 0;
 };
 
 #endif // MODUL_H

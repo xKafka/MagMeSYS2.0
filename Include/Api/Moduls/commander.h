@@ -4,8 +4,9 @@
 #include <QThread>
 
 #include "commands.h"
+#include "Include/Api/Modul.h"
 
-class Commander : public QObject
+class Commander : public QObject, public Modul
 {
     Q_OBJECT
 
@@ -16,6 +17,8 @@ public:
     Commander(QObject *parent);
 
     void parseAndShine(const QString &command);
+
+    Q_INVOKABLE QStringList parseCmd(const QStringList &cmdList) override final;
 
     void echo(const QStringList &cmdList);
     void move(const QStringList &cmdList);

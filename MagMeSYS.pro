@@ -17,8 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += $$files(*.cpp, true)
 
-HEADERS += $$files(*.h, true) \
-    Include/Ui/Moduls/MainWindow/circularbuffer.h
+HEADERS += $$files(*.h, true)
 
 FORMS += $$files(*.ui, true)
 

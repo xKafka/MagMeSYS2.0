@@ -1,27 +1,25 @@
+
 #ifndef TEXTEDIT_H
 #define TEXTEDIT_H
 
 #include <QTextEdit>
 #include <QKeyEvent>
-#include "circularbuffer.h"
+#include <QStringView>
+
+#include "textholder.h"
 
 class TextEdit : public QTextEdit
 {
     Q_OBJECT
 
-    bool m_isCapsPressed;
-    QString m_newLineFeed;
-    QString m_text;
-    size_t m_line;
+    TextHolder m_holder;
 
-    CircularBuffer<QString> m_buffer;
-
-    void emitCmd();
+   // void emitCmd();
     void cursorMoveToEnd();
     void enterPressed();
-    const QString &getCommand();
+  //  const QString &getCommand();
     void onConsoleWrite(const QString &toPush);
-    void removeLine(const size_t line);
+    void removeLastLine();
 
     size_t onLineItr;
 

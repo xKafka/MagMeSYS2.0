@@ -3,15 +3,11 @@
 #include <QDebug>
 #include <algorithm>
 
-constexpr auto c_bufferSize = 64;
 constexpr auto c_newLineChar = "\n->";
 
 TextEdit::TextEdit(QWidget *parent)
     : QTextEdit(parent),
-      m_isCapsPressed(false),
-      m_newLineFeed(c_newLineChar),
-      m_line(0),
-      m_buffer(c_bufferSize)
+      m_holder()
 {
     setText("->MagMeSYS new version 2020 by xKafka\n->");
 
@@ -20,19 +16,19 @@ TextEdit::TextEdit(QWidget *parent)
 
 void TextEdit::keyPressEvent(QKeyEvent *event)
 {
-
     switch(event->key())
     {
-    case Qt::Key_Return : enterPressed(); ++m_line;
+    case Qt::Key_Return : enterPressed();
         break;
-    case Qt::Key_Up : removeLine(++m_line); onConsoleWrite(m_buffer.up());
+    case Qt::Key_Up : removeLastLine(); m_holder.up(); onConsoleWrite(m_holder.cmd());
         break;
-    case Qt::Key_Down : removeLine(++m_line); onConsoleWrite(m_buffer.down());
+    case Qt::Key_Down : removeLastLine(); onConsoleWrite(m_holder.cmd());
         break;
     default:
         QTextEdit::keyPressEvent(event);
     }
-}
+
+}/*
 void TextEdit::emitCmd()
 {
     const auto newLine = m_text.lastIndexOf("\n");
@@ -53,7 +49,7 @@ const QString &TextEdit::getCommand()
     m_buffer.push(m_text.mid(newLinePosition + m_newLineFeed.size(), m_text.size() - newLinePosition - 1));
 
     return m_buffer.last();
-}
+}*/
 void TextEdit::cursorMoveToEnd()
 {
     auto cursor = textCursor();
@@ -62,21 +58,23 @@ void TextEdit::cursorMoveToEnd()
 }
 void TextEdit::enterPressed()
 {
-    m_text = toPlainText();
+    m_holder.renew(toPlainText());
 
-    emitCmd();
+    textCursor().insertText(c_newLineChar);
+
+    qDebug() << m_holder.cmd();
+  //  emitCmd();
 }
 void TextEdit::onConsoleWrite(const QString &toPush)
 {
     moveCursor(QTextCursor::End);
-    insertPlainText("->" + toPush);
+    insertPlainText(toPush);
 }
-void TextEdit::removeLine(const size_t line)
+void TextEdit::removeLastLine()
 {
     auto cursor = textCursor();
 
-    cursor.movePosition(QTextCursor::Start);
-    cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, line);
+    cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor);
     cursor.select(QTextCursor::LineUnderCursor);
     cursor.removeSelectedText();
     cursor.deleteChar(); // clean up new line
